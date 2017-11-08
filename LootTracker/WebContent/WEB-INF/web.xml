@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+
+<servlet>
+  	<servlet-name>AdventureCreator</servlet-name>
+    <servlet-class>control.AdventureCreator</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>AdventureCreator</servlet-name>
+    <url-pattern>/AdventureCreator</url-pattern>
+</servlet-mapping>
+  
+<servlet>
+  	<servlet-name>AdventureSaver</servlet-name>
+    <servlet-class>control.AdventureSaver</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>AdventureSaver</servlet-name>
+    <url-pattern>/save</url-pattern>
+</servlet-mapping>
+<servlet>
+  	<servlet-name>AdventureLoader</servlet-name>
+    <servlet-class>control.AdventureLoader</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>AdventureLoader</servlet-name>
+    <url-pattern>/load</url-pattern>
+</servlet-mapping>
+
+
+<welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+</welcome-file-list>
+
+</web-app>
