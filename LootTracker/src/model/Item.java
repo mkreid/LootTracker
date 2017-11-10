@@ -50,6 +50,16 @@ public class Item implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
+	public String getSanitizedName() {
+		
+		String s = this.name;
+		
+		s = s.replaceAll("'", "\\\\'");
+						
+		return (s);
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -61,6 +71,13 @@ public class Item implements Serializable {
 	}
 	public String getDescription() {
 		return description;
+	}
+	public String getSanitizedDescription() {
+		String d = this.description;
+		
+		d = d.replaceAll("'", "\\\\'");
+		
+		return d;
 	}
 	public void setDescription(String description) {
 		this.description = description;

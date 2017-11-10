@@ -92,6 +92,19 @@ public class AdventureCreator extends HttpServlet {
 			
 			req.getSession().setAttribute("currentAdventure", a);
 			resp.sendRedirect("home.jsp?sessionId="+sessionId);
+			
+		} else if (formDelimiter.equalsIgnoreCase("4")) {
+			
+			// We're modifying an item!
+			Adventure a = (Adventure) req.getSession().getAttribute("currentAdventure");	// get current adventure
+			String sessionId = (String) req.getParameter("sessionId");						// get selected sessionId
+			
+			System.out.println("Going to modify loot in session #"+sessionId);
+			
+			//TODO: get new parameters and update the item
+			
+			req.getSession().setAttribute("currentAdventure", a);							// store changes in session
+			resp.sendRedirect("home.jsp?sessionId="+sessionId);
 		}
 		
 		

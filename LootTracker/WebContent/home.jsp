@@ -37,9 +37,59 @@ function init() {
 		}
 	});
 	
+	
+	
 }
+
+function showEditWindow(editItemId, editItemSessionId, editItemName, editValue, editNote, currencyType) {
+	console.log("showEditWindow() called.");
+	var modal = document.getElementById('editModal');
+	var span = document.getElementsByClassName("close")[1];
+	var form = document.getElementById('modifyLootForm');
+	span.onclick = function() {
+	    modal.style.display = "none";
+	}
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+	    if (event.target == modal) {
+	        modal.style.display = "none";
+	    }
+	}
+	modal.style.display = "block";
+	
+	// set the fields with data
+	document.getElementById('editModalItemId').value = editItemId;
+	document.getElementById('editModalSessionId').value = editItemSessionId;
+	document.getElementById('editModalNameInput').value = editItemName;
+	document.getElementById('editModalValueInput').value = editValue;
+	document.getElementById('editModalNotesInput').value = editNote;
+	
+	console.log("currencyType=" + currencyType);
+	
+	if (currencyType == <%= Item.COPPER_PIECES %>) {
+		console.log("--> cur = CP");
+		document.getElementById("editCurrencyCopper").checked = true;
+	} else if (currencyType == <%= Item.SILVER_PIECES %>) {
+		console.log("--> cur = SP");
+		document.getElementById('editCurrencySilver').checked = true;
+	} else if (currencyType == <%= Item.GOLD_PIECES %>) {
+		console.log("--> cur = GP");
+		document.getElementById('editCurrencyGold').checked = true;
+	} else if (currencyType == <%= Item.ELECTRUM_PIECES %>) {
+		console.log("--> cur = EP");
+		document.getElementById('editCurrencyElectrum').checked = true;
+	} else if (currencyType == <%= Item.PLATINUM_PIECES %>) {
+		console.log("--> cur = PP");
+		document.getElementById('editCurrencyPlatinum').checked = true;
+	}
+	// TODO: set correct radio button as currency
+
+}
+
 window.onload=init;
 </script>
+
+
 
 </head>
 <body>
@@ -49,6 +99,9 @@ Character[] characters = null;
 String selectedCharacterId = null;
 String sessionCount = "";
 String selectedSessionId = null;
+String deleteItemId = null;
+String itemSessionId = null;
+String editItemId = null;
 if (a == null) {
 	// redirect to create new or load!
 	response.sendRedirect("index.html");
@@ -59,16 +112,37 @@ if (a == null) {
 	sessionCount = String.valueOf(a.getNumSessions());
 	selectedCharacterId = request.getParameter("characterId");
 	selectedSessionId = request.getParameter("sessionId");
+	deleteItemId = request.getParameter("deleteItemId");
+	itemSessionId = request.getParameter("itemSessionId");
+	editItemId = request.getParameter("editItemId");
+			
 	
 //	System.out.println("selectedCharacterId=" + selectedCharacterId);
-}%>
+
+}
+
+%>
 
 <%
+
 // check if we're adding a session
 if (request.getParameter("addSession") != null) {
 	System.out.println("New session request!!; addSession="+request.getParameter("addSession"));
 	a.addSession(new Session());
 	sessionCount = String.valueOf(a.getNumSessions());
+}
+%>
+
+<%
+// check if we're adding a session
+if (request.getParameter("modifyItem") != null) {
+	System.out.println("modify item request!!; modifyItem="+request.getParameter("modifyItem"));
+	// do something!
+	%>
+	<script>
+	showEditWindow();
+	</script>
+	<%
 }
 %>
 
@@ -129,9 +203,9 @@ if (selectedCharacterId != null) {
 	out.println("<tr>");
 	out.println("<th>Item</th>");
 	out.println("<th>Value</th>");
-	out.println("<th>Currency</th>");
+	out.println("<th class=\"currencyColumn\">Cur.</th>");
 	out.println("<th>Notes</th>");
-	out.println("<th>Edit</th>");
+	out.println("<th class=\"modifyColumn\">Modify</th>");
 	out.println("</tr>");
 	
 	int itemIndex = 0;
@@ -140,9 +214,10 @@ if (selectedCharacterId != null) {
 		//out.println(i.toString() + "<a href=\"home.jsp?itemId="+ itemIndex + "\">[&times;]</a>" + "<br>");
 		out.println("<th>" + i.getName() + "</th>");
 		out.println("<th>" + i.getValue() + "</th>");
-		out.println("<th>" + i.getPrintableCurrency() + "</th>");
+		out.println("<th class=\"currencyColumn\">" + i.getPrintableCurrency() + "</th>");
 		out.println("<th>" + i.getDescription() + "</th>");
-		out.println("<th>" + "<a href=\"home.jsp?itemId="+ itemIndex + "\">[&times;]</a>" + "</th>");
+		out.println("<th class=\"modifyColumn\">" + "<a href=\"javascript:showEditWindow(" + itemIndex + "," + selectedSessionId + ", '" + i.getSanitizedName() + "', " + i.getValue() + ", '" + i.getSanitizedDescription() + "', " + i.getValueCurrency() + ")\"><img class=\"editImg\" src=\"img/edit_trans.png\"/></a>" +
+				"<a href=\"home.jsp?deleteItemId="+ itemIndex + "&itemSessionId=" + selectedSessionId + "\" onclick=\"return confirm('Are you sure?')\"><img class=\"deleteImg\" src=\"img/delete.png\"/></a>" + "</th>");
 		itemIndex++; 
 		out.println("</tr>");
 	}
@@ -150,6 +225,18 @@ if (selectedCharacterId != null) {
 	out.println("</tbody>");
 	out.println("</table>");
 	out.println("<br>");
+	
+} else if ((deleteItemId != null && itemSessionId != null) ) {
+	// delete an item request!
+	Session s = a.getSession(Integer.parseInt(itemSessionId));
+	s.getSessionLoot().remove(Integer.parseInt(deleteItemId));
+	
+	response.sendRedirect("home.jsp?sessionId=" + itemSessionId);
+	
+} else if ((editItemId != null && itemSessionId != null) ) {	
+	// modify an item request!
+	
+	
 	
 } else {
 	// nothing is selected - display info
@@ -171,6 +258,23 @@ if (selectedCharacterId != null) {
     	<input type="hidden" name="sessionId" value="<%= selectedSessionId %>"/>
 		<input type="hidden" name="form_number" value="3"/>
 		<button class="btn" type="submit">Add..</button>
+	</form>
+  	</div>
+</div>
+
+<!-- The edit-item Modal -->
+<div id="editModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form id="modifyLootForm" name="ModifyLootForm" method="POST" action="AdventureCreator">
+    	<p>Item Name: <input id="editModalNameInput" type="text" name="itemName" value="ERR" required="required"/></p>
+    	<p>Item Value: <input id="editModalValueInput" type="text" name="itemValue" value="ERR" required="required"/><input type="radio" name="currencyValue" value="1" id="editCurrencyCopper" /><label for="editCurrencyCopper">CP</label><input type="radio" name="currencyValue" value="2" id="editCurrencySilver" /><label for="editCurrencySilver">SP</label><input type="radio" name="currencyValue" value="3" id="editCurrencyGold" /><label for="editCurrencyGold">GP</label><input type="radio" name="currencyValue" value="4" id="editCurrencyElectrum" /><label for="editCurrencyElectrum">EP</label><input type="radio" name="currencyValue" value="5" id="editCurrencyPlatinum" /><label for="editCurrencyPlatinum">PP</label></p>
+    	<p>Item Notes: <input id="editModalNotesInput" type="text" name="itemDescription" value="ERR"/></p>
+    	<input id="editModalSessionId" type="hidden" name="sessionId" value="<%= itemSessionId %>"/>
+    	<input id="editModalItemId" type="hidden" name="editItemId" value="<%= editItemId %>"/>
+		<input type="hidden" name="form_number" value="4"/>
+		<button class="btn" type="submit">Save</button>
 	</form>
   	</div>
 </div>

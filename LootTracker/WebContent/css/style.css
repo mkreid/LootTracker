@@ -136,3 +136,19 @@ table#t01 tr:first-child {
 	margin: 0px;
 	width: 85%;
 }
+
+.editImg {
+	width: 40px;
+}
+
+.deleteImg {
+	width: 40px;
+}
+
+.modifyColumn {
+	width: 80px;
+}
+
+.currencyColumn {
+	width: 45px;
+}
