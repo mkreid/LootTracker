@@ -98,10 +98,14 @@ public class AdventureCreator extends HttpServlet {
 			// We're modifying an item!
 			Adventure a = (Adventure) req.getSession().getAttribute("currentAdventure");	// get current adventure
 			String sessionId = (String) req.getParameter("sessionId");						// get selected sessionId
+			String newItemName = (String) req.getParameter("itemName");						// get item name
+			int newItemValue = Integer.parseInt(req.getParameter("itemValue"));				// get item value
+			int newItemCurrency = Integer.parseInt(req.getParameter("currencyValue"));	// get value currency
+			String newItemDescription = (String) req.getParameter("itemDescription");		// get description
 			
 			System.out.println("Going to modify loot in session #"+sessionId);
 			
-			//TODO: get new parameters and update the item
+			//TODO: get itemID and update the fields
 			
 			req.getSession().setAttribute("currentAdventure", a);							// store changes in session
 			resp.sendRedirect("home.jsp?sessionId="+sessionId);
