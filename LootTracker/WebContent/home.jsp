@@ -12,8 +12,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome Heroes!</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js" type="text/javascript"></script>
+<script src="js/jquery_1_7_1.js" type="text/javascript"></script>
+<script src="js/shortcut.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/style.css">
 <script type="text/javascript">
 function init() {
@@ -126,11 +126,13 @@ if (a == null) {
 <%
 
 // check if we're adding a session
+
 if (request.getParameter("addSession") != null) {
 	System.out.println("New session request!!; addSession="+request.getParameter("addSession"));
 	a.addSession(new Session());
 	sessionCount = String.valueOf(a.getNumSessions());
 }
+
 %>
 
 <%
