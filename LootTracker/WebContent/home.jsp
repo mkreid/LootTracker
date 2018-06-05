@@ -7,7 +7,7 @@
 <%@page import="model.Item"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -19,7 +19,6 @@
 function init() {
 	shortcut.add("Shift+SPACE", function() {
 		if (/[?&]sessionId=/.test(location.search)) {
-			//alert("TODO: redirect to add loot screen?");
 			var modal = document.getElementById('myModal');
 			var span = document.getElementsByClassName("close")[0];
 			span.onclick = function() {
@@ -199,7 +198,6 @@ if (selectedCharacterId != null) {
 	+ s.getSessionDate().toString() + "</h2>");
 	out.println("<h4>This session contains " + a.getSession(Integer.parseInt(selectedSessionId)).getSessionLootCount() + " items.</h4>");
 	out.println("<hr>");
-	//out.println("TODO: actually display items!");
 	out.println("<table id=\"t01\">");
 	out.println("<tbody>");
 	out.println("<tr>");

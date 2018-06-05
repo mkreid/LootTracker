@@ -44,7 +44,6 @@ public class AdventureLoader extends HttpServlet {
 		try {
 			a = (Adventure) ois.readObject();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ois.close();
