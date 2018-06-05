@@ -42,7 +42,6 @@ public class AdventureCreator extends HttpServlet {
 		} else if (formDelimiter.equalsIgnoreCase("2")) {
 			// time to setup the characters:
 			Adventure a = (Adventure) req.getSession().getAttribute("currentAdventure");
-			// TODO: error checking on a - is it null?
 			System.out.println("setting up adventure of size " + a.getPartySize());
 			
 			
@@ -52,7 +51,6 @@ public class AdventureCreator extends HttpServlet {
 			for (int i = 0; i< a.getPartySize(); i++) {
 				String name = req.getParameter("character"+i+"Name");
 				String combatClass = req.getParameter("character"+i+"Class");
-				//TODO: accept characters of different level
 				
 				p[i] = new Character(name, combatClass, 1);
 				System.out.print("Character "+(i+1)+" name: "+ req.getParameter("character"+i+"Name"));
@@ -98,10 +96,21 @@ public class AdventureCreator extends HttpServlet {
 			// We're modifying an item!
 			Adventure a = (Adventure) req.getSession().getAttribute("currentAdventure");	// get current adventure
 			String sessionId = (String) req.getParameter("sessionId");						// get selected sessionId
+			String itemId = (String) req.getParameter("editItemId");						// get selected itemId
+			String newItemName = (String) req.getParameter("itemName");						// get item name
+			int newItemValue = Integer.parseInt(req.getParameter("itemValue"));				// get item value
+			int newItemCurrency = Integer.parseInt(req.getParameter("currencyValue"));		// get value currency
+			String newItemDescription = (String) req.getParameter("itemDescription");		// get description
 			
-			System.out.println("Going to modify loot in session #"+sessionId);
+			System.out.println("Modifying item with id=" + itemId + " in session #"+sessionId);
 			
-			//TODO: get new parameters and update the item
+			//get the item to modify and update the fields
+			Item i = a.getSession(Integer.parseInt(sessionId)).getSessionLoot().get(Integer.parseInt(itemId));
+			i.setName(newItemName);
+			i.setValue(newItemValue);
+			i.setValueCurrency(newItemCurrency);
+			i.setDescription(newItemDescription);
+						
 			
 			req.getSession().setAttribute("currentAdventure", a);							// store changes in session
 			resp.sendRedirect("home.jsp?sessionId="+sessionId);
