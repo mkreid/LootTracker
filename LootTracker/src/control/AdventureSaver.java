@@ -34,14 +34,16 @@ public class AdventureSaver extends HttpServlet {
 		Adventure a = (Adventure) req.getSession().getAttribute("currentAdventure");
 		
 		// TODO: prompt for a filename
-		String fileName = "MyAdventure.lttrk";
+		String fileName = "./MyAdventure.lttrk";
 		
 		
 //		System.out.println("AdventureSaver.debug: a.getPartySize() = " + a.getPartySize());
 		
 		
 		// write object to file
-		FileOutputStream fos = new FileOutputStream(getServletContext().getRealPath("/files/"+ fileName));
+	//	FileOutputStream fos = new FileOutputStream(getServletContext().getRealPath("/files/"+ fileName));
+		FileOutputStream fos = new FileOutputStream(fileName);
+		
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		// write object
 		oos.writeObject(a);
@@ -52,7 +54,10 @@ public class AdventureSaver extends HttpServlet {
 		
 		
 		// send file to user
-		File f = new File(getServletContext().getRealPath("/files/" + fileName));
+		//File f = new File(this.getServletContext().getRealPath("/files/" + fileName));
+		File f = new File(fileName);
+		
+		//resp.setContentType("application/lttrk");
 
 		resp.setHeader("Content-Length", String.valueOf(f.length()));
 		resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
