@@ -38,9 +38,13 @@ public class AdventureSaver extends HttpServlet {
 =======
 		// TODO: prompt for a filename
 		String fileName = "./MyAdventure.lttrk";
-				
+		
+		
+//		System.out.println("AdventureSaver.debug: a.getPartySize() = " + a.getPartySize());
+		
 		
 		// write object to file
+	//	FileOutputStream fos = new FileOutputStream(getServletContext().getRealPath("/files/"+ fileName));
 		FileOutputStream fos = new FileOutputStream(fileName);
 		
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -53,8 +57,10 @@ public class AdventureSaver extends HttpServlet {
 		
 		
 		// send file to user
+		//File f = new File(this.getServletContext().getRealPath("/files/" + fileName));
 		File f = new File(fileName);
 		
+		//resp.setContentType("application/lttrk");
 
 		resp.setHeader("Content-Length", String.valueOf(f.length()));
 		resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
@@ -72,7 +78,30 @@ public class AdventureSaver extends HttpServlet {
 		output.close();
 		input.close();
 		
+<<<<<<< master
 >>>>>>> refs/remotes/origin/master
+=======
+//		
+//		String filename = "myAdventure.lttrk";
+//		resp.setContentType("application/octet-stream");
+//		resp.setHeader("Content-Disposition", "attachment;filename="+filename);
+//		
+//		File f = new File(filename);
+////		FileInputStream fileIn = new FileInputStream(f);
+//		FileInputStream fileIn = new FileInputStream(new File(getServletContext().getRealPath("/files/"+filename)));
+//		ServletOutputStream out = resp.getOutputStream();
+//		
+//		byte[] outputeByte = new byte[(int)f.length()];
+//		while (fileIn.read(outputeByte, 0, (int)f.length()) != -1 ) {
+//			out.write(outputeByte, 0, (int)f.length());
+//		}
+//		fileIn.close();
+		
+		//TODO: redirect back to load page!
+		
+//		resp.setContentType("text/hmtl");
+//		resp.sendRedirect("home.jsp");
+>>>>>>> 753b17d Code cleanup
 	}
 	
 }

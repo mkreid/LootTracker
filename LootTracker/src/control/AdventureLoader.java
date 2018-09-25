@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -24,24 +22,23 @@ public class AdventureLoader extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		LOGGER.setLevel(Level.SEVERE);
-		
-		LOGGER.log(Level.INFO, "Loading a file!");
+		System.out.println("Hello, world! Loading a file!");
 		
 		Adventure a = null;
 		
 		// get save file:
+//		File f = (File) req.getSession().getAttribute("saveFile");
 		Part filePart =  req.getPart("saveFile");
 		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 		
 		
-		LOGGER.log(Level.INFO, "Received file: " + fileName);
+		System.out.println("Received file: " + fileName);
 		
+//		FileInputStream is = new FileInputStream(fileName);
+//		FileInputStream is = new FileInputStream(Paths.get(filePart.getSubmittedFileName()).toFile());
 		FileInputStream is = (FileInputStream) filePart.getInputStream();
 		ObjectInputStream ois = new ObjectInputStream(is);
 		try {
@@ -51,20 +48,26 @@ public class AdventureLoader extends HttpServlet {
 		}
 		ois.close();
 		is.close();
-		
-		LOGGER.log(Level.INFO, "adventure count = " + a.getPartySize());
+		System.out.println("adventure count = " + a.getPartySize());
 		
 		req.getSession().setAttribute("currentAdventure", a);
 		
 		
 		
 		resp.sendRedirect("home.jsp");
+<<<<<<< master
 <<<<<<< HEAD
 	}
 		
 =======
 	}	
 >>>>>>> refs/remotes/origin/master
+=======
+	}
+	
+	//TODO: load in a previously saved adventure.
+	
+>>>>>>> 753b17d Code cleanup
 	
 
 }

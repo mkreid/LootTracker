@@ -85,7 +85,11 @@ function showEditWindow(editItemId, editItemSessionId, editItemName, editValue, 
 		console.log("--> cur = PP");
 		document.getElementById('editCurrencyPlatinum').checked = true;
 	}
+<<<<<<< master
 >>>>>>> refs/remotes/origin/master
+=======
+	// TODO: set correct radio button as currency
+>>>>>>> 753b17d Code cleanup
 
 }
 
