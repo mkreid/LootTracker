@@ -34,7 +34,7 @@ public class AdventureCreator extends HttpServlet {
 			Adventure a = new Adventure();
 			// How many adventurers are there?
 			a.setPartySize(Integer.parseInt(req.getParameter("numberOfcharacters")));
-			
+			a.setUsername(req.getParameter("username"));
 			// done 1st setup, redirect to newAdventure2.jsp page, binding  adventure to session
 			HttpSession session = req.getSession();
 			session.setAttribute("currentAdventure", a);

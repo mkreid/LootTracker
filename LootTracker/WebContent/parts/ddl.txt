@@ -1,0 +1,28 @@
+create database loottracker;
+
+use loottracker;
+
+show tables;
+
+DROP TABLE `sec_users`;
+CREATE TABLE `sec_users` (
+  `idSEC_USERS` int(11) NOT NULL AUTO_INCREMENT,
+  `USERNAME` varchar(45) NOT NULL,
+  `FIRST_NAME` varchar(45),
+  `LAST_NAME` varchar(45),
+  `EMAIL_ADDRESS` varchar(45) NOT NULL,
+  `PASSWORD` varchar(45) NOT NULL,
+  `ACCOUNT_TYPE` int(11),
+  PRIMARY KEY (`idSEC_USERS`),
+  UNIQUE KEY `USERNAME_UNIQUE` (`USERNAME`)
+);
+
+DROP TABLE `adventures`;
+CREATE TABLE `adventures` (
+  `ADVENTURE_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `USERNAME` varchar(45) NOT NULL,
+  `ADVENTURE_OBJECT` BLOB,
+  PRIMARY KEY (`ADVENTURE_ID`),
+  FOREIGN KEY(`USERNAME`) REFERENCES `sec_users`(`USERNAME`),
+  UNIQUE KEY `SESSION_UNIQUE` (`ADVENTURE_ID`, `USERNAME`)
+);

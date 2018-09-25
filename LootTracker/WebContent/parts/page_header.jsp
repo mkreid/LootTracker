@@ -1,0 +1,1 @@
+<div id = "header"><a href="home.jsp">Welcome to LootTracker!</a></div>

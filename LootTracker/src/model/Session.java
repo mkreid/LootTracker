@@ -26,6 +26,12 @@ public class Session implements Serializable {
 		
 	}
 	
+	public Session(Date aDate) {
+		this.setSessionDate(aDate);
+		this.sessionLoot = new ArrayList<Item>();
+		
+	}
+	
 	public ArrayList<Item> getSessionLoot() {
 		return sessionLoot;
 	}

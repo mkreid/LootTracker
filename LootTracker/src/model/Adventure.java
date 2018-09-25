@@ -22,6 +22,7 @@ public class Adventure implements Serializable {
 	/* Local Private Variables */
 	private static final long serialVersionUID = 1L;
 	private int partySize;
+	private String username = null;
 	private Character[] party = null;
 	private ArrayList<Session> sessions = null;
 
@@ -76,6 +77,14 @@ public class Adventure implements Serializable {
 	}
 	public ArrayList<Session> getAllSessions() {
 		return this.sessions;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 

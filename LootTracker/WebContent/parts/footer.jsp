@@ -1,0 +1,1 @@
+<div id="footer">&copy;2018 - Malcolm Reid - v2018.09</div>

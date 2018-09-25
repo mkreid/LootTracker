@@ -1,3 +1,4 @@
+<%@page import="control.LoginController"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
@@ -7,7 +8,7 @@
 <%@page import="model.Item"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -19,7 +20,6 @@
 function init() {
 	shortcut.add("Shift+SPACE", function() {
 		if (/[?&]sessionId=/.test(location.search)) {
-			//alert("TODO: redirect to add loot screen?");
 			var modal = document.getElementById('myModal');
 			var span = document.getElementsByClassName("close")[0];
 			span.onclick = function() {
@@ -63,26 +63,8 @@ function showEditWindow(editItemId, editItemSessionId, editItemName, editValue, 
 	document.getElementById('editModalNameInput').value = editItemName;
 	document.getElementById('editModalValueInput').value = editValue;
 	document.getElementById('editModalNotesInput').value = editNote;
+	document.getElementById('editCurrencyValue').value = currencyType;
 	
-	console.log("currencyType=" + currencyType);
-	
-	if (currencyType == <%= Item.COPPER_PIECES %>) {
-		console.log("--> cur = CP");
-		document.getElementById("editCurrencyCopper").checked = true;
-	} else if (currencyType == <%= Item.SILVER_PIECES %>) {
-		console.log("--> cur = SP");
-		document.getElementById('editCurrencySilver').checked = true;
-	} else if (currencyType == <%= Item.GOLD_PIECES %>) {
-		console.log("--> cur = GP");
-		document.getElementById('editCurrencyGold').checked = true;
-	} else if (currencyType == <%= Item.ELECTRUM_PIECES %>) {
-		console.log("--> cur = EP");
-		document.getElementById('editCurrencyElectrum').checked = true;
-	} else if (currencyType == <%= Item.PLATINUM_PIECES %>) {
-		console.log("--> cur = PP");
-		document.getElementById('editCurrencyPlatinum').checked = true;
-	}
-	// TODO: set correct radio button as currency
 
 }
 
@@ -104,7 +86,7 @@ String itemSessionId = null;
 String editItemId = null;
 if (a == null) {
 	// redirect to create new or load!
-	response.sendRedirect("index.html");
+	response.sendRedirect("index.jsp");
 } else {
 //	System.out.println("a is NOT null - yay!!!");
 	partySize = String.valueOf(a.getPartySize());
@@ -173,7 +155,7 @@ Party Size: <%= partySize %>
 <input type="hidden" name="addSession" value="1">
 <button onclick="javascript:addSession()">[+]</button>
 </form>
-<% if (!sessionCount.equalsIgnoreCase("0")) {
+<% if (!sessionCount.equalsIgnoreCase("0") && a!=null) {
 	int i = 0;
 	for (Session s : a.getAllSessions()) {
 		// do stuff
@@ -199,7 +181,6 @@ if (selectedCharacterId != null) {
 	+ s.getSessionDate().toString() + "</h2>");
 	out.println("<h4>This session contains " + a.getSession(Integer.parseInt(selectedSessionId)).getSessionLootCount() + " items.</h4>");
 	out.println("<hr>");
-	//out.println("TODO: actually display items!");
 	out.println("<table id=\"t01\">");
 	out.println("<tbody>");
 	out.println("<tr>");
@@ -218,8 +199,11 @@ if (selectedCharacterId != null) {
 		out.println("<th>" + i.getValue() + "</th>");
 		out.println("<th class=\"currencyColumn\">" + i.getPrintableCurrency() + "</th>");
 		out.println("<th>" + i.getDescription() + "</th>");
-		out.println("<th class=\"modifyColumn\">" + "<a href=\"javascript:showEditWindow(" + itemIndex + "," + selectedSessionId + ", '" + i.getSanitizedName() + "', " + i.getValue() + ", '" + i.getSanitizedDescription() + "', " + i.getValueCurrency() + ")\"><img class=\"editImg\" src=\"img/edit_trans.png\"/></a>" +
-				"<a href=\"home.jsp?deleteItemId="+ itemIndex + "&itemSessionId=" + selectedSessionId + "\" onclick=\"return confirm('Are you sure?')\"><img class=\"deleteImg\" src=\"img/delete.png\"/></a>" + "</th>");
+		out.println("<th class=\"modifyColumn\">" + "<a href=\"javascript:showEditWindow(" + itemIndex + "," + selectedSessionId + 
+				", '" + i.getSanitizedName() + "', " + i.getValue() + ", '" + i.getSanitizedDescription() + "', " + 
+				i.getValueCurrency() + ")\"><img class=\"editImg\" src=\"img/edit_trans.png\"/></a>" +
+				"<a href=\"home.jsp?deleteItemId="+ itemIndex + "&itemSessionId=" + selectedSessionId + 
+				"\" onclick=\"return confirm('Are you sure?')\"><img class=\"deleteImg\" src=\"img/delete.png\"/></a>" + "</th>");
 		itemIndex++; 
 		out.println("</tr>");
 	}
@@ -255,7 +239,14 @@ if (selectedCharacterId != null) {
     <span class="close">&times;</span>
     <form name="NewLootForm" method="POST" action="AdventureCreator">
     	<p>Item Name: <input type="text" name="itemName" placeholder="Stinky old shoe" required="required"/></p>
-    	<p>Item Value: <input type="text" name="itemValue" placeholder="0" required="required"/><input type="radio" name="currencyValue" value="1" id="currencyCopper" checked /><label for="currencyCopper">CP</label><input type="radio" name="currencyValue" value="2" id="currencySilver" /><label for="currencySilver">SP</label><input type="radio" name="currencyValue" value="3" id="currencyGold" /><label for="currencyGold">GP</label><input type="radio" name="currencyValue" value="4" id="currencyElectrum" /><label for="currencyElectrum">EP</label><input type="radio" name="currencyValue" value="5" id="currencyPlatinum" /><label for="currencyPlatinum">PP</label></p>
+    	<p>Item Value: <input type="text" name="itemValue" placeholder="0" required="required"/>
+    	<select name="currencyValue">
+    		<option value="1" id="currencyCopper">CP</option>
+    		<option value="2" id="currencySilver">SP</option>
+    		<option value="3" id="currencyGold">GP</option>
+    		<option value="4" id="currencyElectrum">EP</option>
+    		<option value="5" id="currencyPlatinum">PP</option>
+    	</select>
     	<p>Item Notes: <input type="text" name="itemDescription" placeholder="This shoe smells funny..."/></p>
     	<input type="hidden" name="sessionId" value="<%= selectedSessionId %>"/>
 		<input type="hidden" name="form_number" value="3"/>
@@ -271,7 +262,14 @@ if (selectedCharacterId != null) {
     <span class="close">&times;</span>
     <form id="modifyLootForm" name="ModifyLootForm" method="POST" action="AdventureCreator">
     	<p>Item Name: <input id="editModalNameInput" type="text" name="itemName" value="ERR" required="required"/></p>
-    	<p>Item Value: <input id="editModalValueInput" type="text" name="itemValue" value="ERR" required="required"/><input type="radio" name="currencyValue" value="1" id="editCurrencyCopper" /><label for="editCurrencyCopper">CP</label><input type="radio" name="currencyValue" value="2" id="editCurrencySilver" /><label for="editCurrencySilver">SP</label><input type="radio" name="currencyValue" value="3" id="editCurrencyGold" /><label for="editCurrencyGold">GP</label><input type="radio" name="currencyValue" value="4" id="editCurrencyElectrum" /><label for="editCurrencyElectrum">EP</label><input type="radio" name="currencyValue" value="5" id="editCurrencyPlatinum" /><label for="editCurrencyPlatinum">PP</label></p>
+		<p>Item Value: <input id="editModalValueInput" type="text" name="itemValue" value="ERR" required="required"/>
+		<select name="currencyValue" id="editCurrencyValue">
+    		<option value="1" id="editCurrencyCopper">CP</option>
+    		<option value="2" id="editCurrencySilver">SP</option>
+    		<option value="3" id="editCurrencyGold">GP</option>
+    		<option value="4" id="editCurrencyElectrum">EP</option>
+    		<option value="5" id="editCurrencyPlatinum">PP</option>
+    	</select>
     	<p>Item Notes: <input id="editModalNotesInput" type="text" name="itemDescription" value="ERR"/></p>
     	<input id="editModalSessionId" type="hidden" name="sessionId" value="<%= itemSessionId %>"/>
     	<input id="editModalItemId" type="hidden" name="editItemId" value="<%= editItemId %>"/>
@@ -283,8 +281,9 @@ if (selectedCharacterId != null) {
 
 <!--  footer content -->
 <div id="footer">
-<a href="save">Download Progress</a> | <a href="index.html" onclick="return confirm('Are you sure? Unsaved progress will be lost!')">Exit</a>
+<form action="login" method="POST"><input type="hidden" name="action_request" value="<%= LoginController.LOGOUT_REQUEST %>"/><button type="submit" name="logout" value="logout" onclick="return confirm('Are you sure? Unsaved progress will be lost!')">Logout</button></form>
+<form action="save" method="POST"><button type="submit" name="save" value="save">Save</button></form>
 </div>
-
+<%@ include file="parts/footer.jsp" %>
 </body>
 </html>
