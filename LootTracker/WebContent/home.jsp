@@ -65,6 +65,27 @@ function showEditWindow(editItemId, editItemSessionId, editItemName, editValue, 
 	document.getElementById('editModalNotesInput').value = editNote;
 	document.getElementById('editCurrencyValue').value = currencyType;
 	
+<<<<<<< HEAD
+=======
+	console.log("currencyType=" + currencyType);
+	
+	if (currencyType == <%= Item.COPPER_PIECES %>) {
+		console.log("--> cur = CP");
+		document.getElementById("editCurrencyCopper").checked = true;
+	} else if (currencyType == <%= Item.SILVER_PIECES %>) {
+		console.log("--> cur = SP");
+		document.getElementById('editCurrencySilver').checked = true;
+	} else if (currencyType == <%= Item.GOLD_PIECES %>) {
+		console.log("--> cur = GP");
+		document.getElementById('editCurrencyGold').checked = true;
+	} else if (currencyType == <%= Item.ELECTRUM_PIECES %>) {
+		console.log("--> cur = EP");
+		document.getElementById('editCurrencyElectrum').checked = true;
+	} else if (currencyType == <%= Item.PLATINUM_PIECES %>) {
+		console.log("--> cur = PP");
+		document.getElementById('editCurrencyPlatinum').checked = true;
+	}
+>>>>>>> refs/remotes/origin/master
 
 }
 
