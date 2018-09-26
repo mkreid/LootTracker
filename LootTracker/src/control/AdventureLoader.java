@@ -55,19 +55,7 @@ public class AdventureLoader extends HttpServlet {
 		
 		
 		resp.sendRedirect("home.jsp");
-<<<<<<< master
-<<<<<<< HEAD
-	}
-		
-=======
+
 	}	
->>>>>>> refs/remotes/origin/master
-=======
-	}
-	
-	//TODO: load in a previously saved adventure.
-	
->>>>>>> 753b17d Code cleanup
-	
 
 }
